@@ -30,6 +30,9 @@
             sdl3 # Graphics library
             sdl3-ttf # Text lib
             # sdl3-image # Sprites
+            libdrm # Rendering library
+            libgbm # Rendering library
+            libxkbcommon # Keyboard library
           ];
         };
       });

@@ -1,13 +1,11 @@
 {
   description = "A Nix-flake-based C/C++ development environment";
-
-  # inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
+  # inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
   outputs = { self, nixpkgs }:
     let
-      supportedSystems =
-        [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
+        # [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forEachSupportedSystem = f:
         nixpkgs.lib.genAttrs supportedSystems
         (system: f { pkgs = import nixpkgs { inherit system; }; });
@@ -28,12 +26,12 @@
             lldb # Debug adapter
             pkg-config # Find libraries
             valgrind # Debugging and profiling
+            # Libs
             sdl3 # Graphics library
-            # sdl3-ttf # Text lib
+            sdl3-ttf # Text lib
             # sdl3-image # Sprites
           ];
         };
       });
     };
 }
-

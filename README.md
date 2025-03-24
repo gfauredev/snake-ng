@@ -85,3 +85,6 @@ void my_func(uint32_t arg1, uint16_t arg2);
 Utilisation des entiers de taille définie `uint16_t`, `uint32_t` et `uint64_t`
 de la bibliothèque `<stdint.h>` au lieu des `short`, `int` et `long` dépendants
 de la plateforme.
+
+Norme du langage C la plus récente,
+[C23](https://en.wikipedia.org/wiki/C23_(C_standard_revision)).

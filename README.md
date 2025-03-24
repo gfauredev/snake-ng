@@ -15,13 +15,15 @@ Projet tutoré de développement en C à Polytech Tours.
 | Compilateur                  | [Clang](https://clang.llvm.org)           |
 | Assistance langage C         | [clangd](https://clangd.llvm.org) (LSP)   |
 | Auto formateur               | [clangd](https://clangd.llvm.org) (LSP)   |
+| Débugueur                    | [lldb](https://lldb.llvm.org)             |
 | Système de build             | [CMake](https://cmake.org) (utilise Make) |
 | Versionnage et collaboration | [Git](https://git-scm.com) avec GitHub    |
 
 ### Bibliothèques
 
 - SDL3 pour la gestion des fenêtres, les graphismes, l’affichage
-  - SDL3-ttf pour supporter l’écriture dans les fenêtres SDL3
+
+<!-- - SDL3-ttf pour supporter l’écriture dans les fenêtres SDL3 -->
 
 ## Conventions de code
 

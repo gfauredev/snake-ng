@@ -1,7 +1,8 @@
 {
   description = "A Nix-flake-based C/C++ development environment";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+  # inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs = { self, nixpkgs }:
     let
@@ -27,6 +28,9 @@
             lldb # Debug adapter
             pkg-config # Find libraries
             valgrind # Debugging and profiling
+            sdl3 # Graphics library
+            # sdl3-ttf # Text lib
+            # sdl3-image # Sprites
           ];
         };
       });

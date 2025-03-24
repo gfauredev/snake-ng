@@ -6,15 +6,25 @@ Projet tutoré de développement en C à Polytech Tours.
 
 ## Conventions de code
 
+### Organisation
+
+| Fichier   | Contenu                   |
+| --------- | ------------------------- |
+| `main.c`  | Lancement et arrêt du jeu |
+| `state.c` | États du jeu              |
+| `fruit.c` | Fruits                    |
+| `snake.c` | Structure du Snake        |
+| `param.h` | Paramètres globaux        |
+
 ### Nommage des symboles
 
-| Symbole               | Convention                   |
-| --------------------- | ---------------------------- |
-| Variable (int…)       | `snake_case`                 |
-| Constante (#DEFINE…)  | `UPPER_CASE`                 |
-| Fonction (void fn()…) | `snake_case`                 |
-| Types (struct, enum…) | `snake_case` suivi de `_t`   |
-| Tableaux ([])         | `snake_case` suivi de `_tab` |
+| Symbole                        | Convention                   |
+| ------------------------------ | ---------------------------- |
+| Variable (`int`…)              | `snake_case`                 |
+| Macro (constante) (`#DEFINE`…) | `UPPER_CASE`                 |
+| Fonction (`void fn()`…)        | `snake_case`                 |
+| Types (`struct`, `enum`…)      | `snake_case` suivi de `_t`   |
+| Tableaux (`int []`…)           | `snake_case` suivi de `_tab` |
 
 ### Formatage du code (sauts de ligne, indentation…)
 

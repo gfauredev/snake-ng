@@ -1,0 +1,10 @@
+*.o
+*.so
+
+build/
+.cache/
+.direnv/
+
+splashmem
+
+compile_commands.json

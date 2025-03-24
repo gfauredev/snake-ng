@@ -28,11 +28,11 @@
             valgrind # Debugging and profiling
             # Libs
             sdl3 # Graphics library
-            sdl3-ttf # Text lib
+            # sdl3-ttf # Text lib
             # sdl3-image # Sprites
-            libdrm # Rendering library
-            libgbm # Rendering library
-            libxkbcommon # Keyboard library
+            # libdrm # Rendering library
+            # libgbm # Rendering library
+            # libxkbcommon # Keyboard library
           ];
         };
       });

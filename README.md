@@ -18,6 +18,7 @@ Projet tutoré de développement en C à Polytech Tours.
 | Débugueur                    | [lldb](https://lldb.llvm.org)             |
 | Système de build             | [CMake](https://cmake.org) (utilise Make) |
 | Versionnage et collaboration | [Git](https://git-scm.com) avec GitHub    |
+| Gestion de dépendances       | [Nix](https://nixos.org)                  |
 
 ### Bibliothèques
 

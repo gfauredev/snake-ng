@@ -25,7 +25,7 @@
             lcov # Code coverage
             lldb # Debug adapter
             pkg-config # Find libraries
-            valgrind # Debugging and profiling
+            # valgrind # Debugging and profiling
             # Libs
             sdl3 # Graphics library
             # sdl3-ttf # Text lib

@@ -1,5 +1,5 @@
-#ifndef SNAKE
-#define SNAKE
+#ifndef __SNAKE__
+#define __SNAKE__
 
 #include <stdint.h>
 #include <stdlib.h>

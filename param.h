@@ -1,5 +1,5 @@
-#ifndef PARAM
-#define PARAM
+#ifndef __PARAM__
+#define __PARAM__
 
 // serpent prametre
     //Move

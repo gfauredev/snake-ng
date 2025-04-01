@@ -23,22 +23,22 @@ typedef struct snake_part_s
 {
     uint32_t x;
     uint32_t y;
-    vect_t vect_t;
+    vect_t vect;
 
-} snake_patrt_t;
+} snake_part_t;
 
 /**
  * @typedef
  * @brief Structure représentant le serpent
  * @param head Tete du sepent
- * @param snake_body Corp du serpent (un pointeur de `snake_patrt_t` ), c'est un tableau de longueur `lenght`
+ * @param snake_body Corp du serpent (un pointeur de `snake_part_t` ), c'est un tableau de longueur `lenght`
  * @param lenght Longueur du corp du serpent (sans la tête `head`) et donc longueur du tableau `snake_body`
  * @param speed vitesse du serpent
  */
 typedef struct snake_s
 {
-    snake_patrt_t* head;
-    snake_patrt_t* snake_body;
+    snake_part_t* head;
+    snake_part_t* snake_body;
     uint16_t lenght;
     uint16_t speed;
 

@@ -33,10 +33,11 @@ Projet tutoré de développement en C à Polytech Tours.
 | Fichier   | Contenu                   |
 | --------- | ------------------------- |
 | `main.c`  | Lancement et arrêt du jeu |
-| `state.c` | États du jeu              |
-| `fruit.c` | Fruits                    |
-| `snake.c` | Structure du Snake        |
 | `param.h` | Paramètres globaux        |
+| `snake.c` | Structure du Snake        |
+| `fruit.c` | Fruits                    |
+
+<!-- | `state.c` | États du jeu              | -->
 
 ### Nommage des symboles
 

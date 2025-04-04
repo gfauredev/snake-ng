@@ -24,6 +24,6 @@
 // Carte
 #define MAP_WIDTH 100
 #define MAP_HEIGHT 100
-#define PIXEL_PER_SQUARE 5
+#define PIXEL_PER_SQUARE 10
 
 #endif

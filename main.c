@@ -1,16 +1,22 @@
-#include "SDL3/SDL_init.h"
-#include <stdlib.h>
+#include "SDL3/SDL_render.h"
 #define SDL_MAIN_USE_CALLBACKS 1
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
-#include <stdint.h>
-
-#include "param.h"
-
 #define WINDOW_WIDTH MAP_WIDTH* PIXEL_PER_SQUARE
 #define WINDOW_HEIGHT MAP_HEIGHT* PIXEL_PER_SQUARE
+
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3/SDL_timer.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+#include "param.h"
+#include "snake.h"
+#include "struct.h"
+
 static SDL_Window*   window   = NULL; // La fenêtre
 static SDL_Renderer* renderer = NULL; // Le moteur de rendu, configuré
+snake_t*             snake    = NULL; // Le serpent du jeu
 
 /**
  * @brief Fonction lancée une fois au tout début du programme, pour initialiser
@@ -37,6 +43,18 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+    // Initialisations d’objets du jeu
+    // init_snake_body(snake); // Le serpent
+    // Message de bienvenue fenêtre et terminal, couleur définie à blanc
+    SDL_Log("Affichage : Mangez un maximum de fruits !");
+    SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderScale(renderer, 4.0f, 4.0f); // Quadruple texte
+    SDL_RenderDebugText(renderer, 10, WINDOW_HEIGHT / 4 / 2,
+                        "Mangez un maximum de fruits!");
+    SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
+    SDL_RenderPresent(renderer); // Affiche les modifications effectuées
+    SDL_Delay(2500); // Attend quelques secondes que l’utilisateur ait vu
+
     // Si nous sommes arrivés jusque là, continuer normalement
     return SDL_APP_CONTINUE;
 }
@@ -65,13 +83,19 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
  */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    // Définit la couleur noire et remplace toute la fenêtre par celle-ci
+    // Définit la couleur noire et remplis la feneêtre de celle-ci
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
-    // Affiche le but du jeu en blanc sur la fenêtre, log dans le terminal
-    SDL_Log("Affichage : Mangez un maximum de fruits !");
+    SDL_RenderClear(renderer); // RenderDrawColor sur toute la fenêtre
+
+    // Définit notre rectangle d’une "case", placé au millieu
+    SDL_FRect rect;
+    rect.w = rect.h = PIXEL_PER_SQUARE;
+    rect.x          = WINDOW_WIDTH / 2;  // Place le rectangle au milieu
+    rect.y          = WINDOW_HEIGHT / 2; // Place le rectangle au milieu
+
+    // Définit la couleur blanc et dessine le rectangle avec
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderDebugText(renderer, 20, 20, "Hello world!");
+    SDL_RenderFillRect(renderer, &rect);
 
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     return SDL_APP_CONTINUE;     // Continue l’exécution normalement

@@ -9,8 +9,8 @@
 #define RIGHT {1, 0}
 
 // Tête
-#define SNAKE_START_X 100
-#define SNAKE_START_Y 100
+#define SNAKE_START_X 50
+#define SNAKE_START_Y 50
 #define SNAKE_START_ORIENTATION UP
 
 // Corps

@@ -36,7 +36,7 @@ typedef struct snake_part_s
 typedef struct snake_s
 {
     snake_part_t* head;
-    snake_part_t* snake_body;
+    snake_part_t* body;
     uint16_t      lenght;
     uint16_t      speed;
 
@@ -50,6 +50,6 @@ typedef struct fruit_s
     uint8_t  color;
     uint32_t x; //< Position horizontale
     uint32_t y; //< Position verticale
-    void (*effect)(snake_t snake);
+    void (*effect)(snake_t* snake);
 } fruit_t;
 #endif

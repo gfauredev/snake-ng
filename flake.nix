@@ -15,6 +15,7 @@
           stdenv = pkgs.clangStdenv; # Clang instead of GCC
         } {
           packages = with pkgs; [
+            git # Version control tool
             clang-tools # clang CLIs
             cmake # Automation tool
             cmake-language-server # LSP

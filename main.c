@@ -46,12 +46,14 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     // Initialisations d’objets du jeu
     snake = init_snake(); // Le serpent
     // Message de bienvenue fenêtre et terminal, couleur définie à blanc
+    SDL_Log("Bienvenue sur le jeu Snake New Generation !");
     SDL_Log("Affichage : Mangez un maximum de fruits !");
     SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(renderer, 4.0f, 4.0f); // Quadruple texte
     SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / 4 / 2,
                         "Mangez un maximum de fruits!");
     SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
+    SDL_Log("");
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     SDL_Delay(2500); // Attend quelques secondes que l’utilisateur ait vu
 

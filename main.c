@@ -53,7 +53,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / 4 / 2,
                         "Mangez un maximum de fruits!");
     SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
-    SDL_Log("");
+    SDL_Log("");                              // Saute une ligne
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     SDL_Delay(2500); // Attend quelques secondes que l’utilisateur ait vu
 
@@ -85,27 +85,30 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
  */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    // Définit la couleur noire et remplis la feneêtre de celle-ci
+    // Définit la couleur noire, en remplit la feneêtre, puis passe au blanc
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer); // RenderDrawColor sur toute la fenêtre
-
-    // Définit notre rectangle d’une "case", définit la couleur blanche
-    SDL_FRect rect;
-    rect.w = rect.h = PIXEL_PER_SQUARE;
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
-    // Déssine la tête du serpent
-    rect.x = snake->head->x;
-    rect.y = snake->head->y;
-    SDL_RenderFillRect(renderer, &rect);
+    // Déssine la tête du serpent, positionnée au bon endroit
+    SDL_FRect rect; // Définit le rectangle d’une "case"
+    rect.w = rect.h = PIXEL_PER_SQUARE;
+    rect.x          = snake->head->x; // Positionne la tête horizontalement
+    rect.y          = snake->head->y; // Positionne la tête verticalement
+    SDL_Log("Affichage : Tête (%f, %f)", rect.x, rect.y);
+    SDL_RenderFillRect(renderer, &rect); // Affiche
     // Déssine le corps du serpent
     for (uint16_t i = 0; i < snake->lenght; i++)
     {
-        rect.x = snake->body[i].x;
-        rect.y = snake->body[i].y;
-        SDL_RenderFillRect(renderer, &rect);
+        SDL_FRect rect; // Shadow le rectangle d’une "case"
+        rect.w = rect.h = PIXEL_PER_SQUARE;
+        rect.x = snake->body[i].x; // Positionne le corps horizontalement
+        rect.y = snake->body[i].y; // Positionne le corps verticalement
+        SDL_Log("Affichage : Corps (%f, %f)", rect.x, rect.y);
+        SDL_RenderFillRect(renderer, &rect); // Affiche
     }
 
+    SDL_Log("");                 // Saute une ligne
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     return SDL_APP_CONTINUE;     // Continue l’exécution normalement
 }

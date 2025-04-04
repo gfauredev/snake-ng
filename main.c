@@ -1,4 +1,3 @@
-#include "SDL3/SDL_render.h"
 #define SDL_MAIN_USE_CALLBACKS 1
 #define WINDOW_WIDTH MAP_WIDTH* PIXEL_PER_SQUARE
 #define WINDOW_HEIGHT MAP_HEIGHT* PIXEL_PER_SQUARE
@@ -6,6 +5,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_timer.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -16,7 +16,7 @@
 
 static SDL_Window*   window   = NULL; // La fenêtre
 static SDL_Renderer* renderer = NULL; // Le moteur de rendu, configuré
-snake_t*             snake    = NULL; // Le serpent du jeu
+snake_t*             snake;           // Le serpent du jeu
 
 /**
  * @brief Fonction lancée une fois au tout début du programme, pour initialiser
@@ -44,12 +44,12 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
     // Initialisations d’objets du jeu
-    // init_snake_body(snake); // Le serpent
+    snake = init_snake(); // Le serpent
     // Message de bienvenue fenêtre et terminal, couleur définie à blanc
     SDL_Log("Affichage : Mangez un maximum de fruits !");
     SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(renderer, 4.0f, 4.0f); // Quadruple texte
-    SDL_RenderDebugText(renderer, 10, WINDOW_HEIGHT / 4 / 2,
+    SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / 4 / 2,
                         "Mangez un maximum de fruits!");
     SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
@@ -87,15 +87,22 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer); // RenderDrawColor sur toute la fenêtre
 
-    // Définit notre rectangle d’une "case", placé au millieu
+    // Définit notre rectangle d’une "case", définit la couleur blanche
     SDL_FRect rect;
     rect.w = rect.h = PIXEL_PER_SQUARE;
-    rect.x          = WINDOW_WIDTH / 2;  // Place le rectangle au milieu
-    rect.y          = WINDOW_HEIGHT / 2; // Place le rectangle au milieu
-
-    // Définit la couleur blanc et dessine le rectangle avec
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+
+    // Déssine la tête du serpent
+    rect.x = snake->head->x;
+    rect.y = snake->head->y;
     SDL_RenderFillRect(renderer, &rect);
+    // Déssine le corps du serpent
+    for (uint16_t i = 0; i < snake->lenght; i++)
+    {
+        rect.x = snake->body[i].x;
+        rect.y = snake->body[i].y;
+        SDL_RenderFillRect(renderer, &rect);
+    }
 
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     return SDL_APP_CONTINUE;     // Continue l’exécution normalement

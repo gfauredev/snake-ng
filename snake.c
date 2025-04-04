@@ -23,19 +23,88 @@ void init_snake_body(snake_t* snake)
 
     body = malloc(BODY_TAB_LENGHT*sizeof(snake_part_t));
 
-    for(uint8_t i=0; i<START_BODY_SIZE-1; i++)
+    // Initialise les partie du corp du serpent
+    for(uint8_t i=0; i<START_BODY_SIZE; i++)
     {
         body[i].x = head->x + i*(head->vect.x);
         body[i].y = head->y + i*(head->vect.y);
         body[i].vect = head->vect;
     }
 
-    snake->snake_body = body;
+    // Gère la longueur du serpent
+    snake->lenght           = BODY_TAB_LENGHT;
+    snake->lenght_body_tab  = BODY_TAB_LENGHT;
+
+    snake->body = body;
 }
 
-void resize_snake_body(snake_t* snake, uint8_t how_much)
+void resize_snake_body(snake_t* snake)
 {
+    realloc(snake->body,sizeof(snake_part_t)*snake->lenght_body_tab*BODY_RESIZE);
+}
 
+void accelerate(snake_t* snake, int16_t accel)
+{
+    snake->speed = accel;
+}
+
+void eat(snake_t* snake, fruit_t* fruit)
+{
+    fruit->effect(snake);
+}
+
+void move_snake(snake_t* snake)
+{
+    // Gère le resize du tableau body du serpent si trop long
+    if(snake->lenght == snake->lenght_body_tab)
+        resize_snake_body(snake);
+
+    // Deplace le corp dans le tableau body
+    for(uint16_t i=(snake->lenght-1); i>0; i--) 
+    {
+        snake->body[i] = snake->body[i - 1];
+    }
+    
+    // Met la tête dans le body[0]
+    snake->body[0] = *snake->head;
+
+    // Dépalce la tête en fonction du vecteur
+    snake->head->x += snake->head->vect.x;
+    snake->head->y += snake->head->vect.y;
+
+}
+
+void turn_snake(snake_t* snake, vect_t move)
+{
+    snake->head->vect = move;
+}
+
+bool check_death(const snake_t* snake)
+{
+    // Verifie pour map
+    // x
+    if((snake->head->x == MAP_WIDTH) || (snake->head->x == 0))
+        return true;
+    // y
+    if((snake->head->y == MAP_HEIGHT) || (snake->head->y == 0))
+        return true;
+
+    // Vérifie pour corp
+    for(uint16_t i=(snake->lenght-1);i>=0; i--)
+    {
+        if((snake->head->y == snake->body[i].y) && (snake->head->x == snake->body[i].x))
+            return true;
+    }
+
+    return false;
+    
+}
+
+void free_snake_data(snake_t* snake)
+{
+    free(snake->head);
+    free(snake->body);
+    free(snake);
 }
 
 snake_t* init_snake()

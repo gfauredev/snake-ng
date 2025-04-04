@@ -50,6 +50,6 @@ typedef struct fruit_s
     uint8_t  color;
     uint32_t x; //< Position horizontale
     uint32_t y; //< Position verticale
-    void (*effect)(snake_t snake);
+    void (*effect)(snake_t *snake);
 } fruit_t;
 #endif

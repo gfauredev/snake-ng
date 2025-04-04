@@ -23,19 +23,24 @@ void init_snake_body(snake_t* snake)
 
     body = malloc(BODY_TAB_LENGHT*sizeof(snake_part_t));
 
-    for(uint8_t i=0; i<START_BODY_SIZE-1; i++)
+    // Initialise les partie du corp du serpent
+    for(uint8_t i=0; i<START_BODY_SIZE; i++)
     {
         body[i].x = head->x + i*(head->vect.x);
         body[i].y = head->y + i*(head->vect.y);
         body[i].vect = head->vect;
     }
 
+    // Gère la longueur du serpent
+    snake->lenght           = BODY_TAB_LENGHT;
+    snake->lenght_body_tab  = BODY_TAB_LENGHT;
+
     snake->body = body;
 }
 
-void resize_snake_body(snake_t* snake, uint8_t how_much)
+void resize_snake_body(snake_t* snake)
 {
-    realloc(snake->body,sizeof(snake_part_t)*(BODY_TAB_LENGHT*how_much));
+    realloc(snake->body,sizeof(snake_part_t)*snake->lenght_body_tab*BODY_RESIZE);
 }
 
 void accelerate(snake_t* snake, int16_t accel)
@@ -50,8 +55,12 @@ void eat(snake_t* snake, fruit_t* fruit)
 
 void move_snake(snake_t* snake)
 {
+    // Gère le resize du tableau body du serpent si trop long
+    if(snake->lenght == snake->lenght_body_tab)
+        resize_snake_body(snake);
+
     // Deplace le corp dans le tableau body
-    for(uint16_t i=(snake->lenght-1); i>0; i--)
+    for(uint16_t i=(snake->lenght-1); i>0; i--) 
     {
         snake->body[i] = snake->body[i - 1];
     }
@@ -103,7 +112,7 @@ snake_t* init_snake()
     snake_t* snake;
     snake = malloc(sizeof(snake_t));
     init_snake_head(snake);
-    init_body(snake);
+    init_snake_body(snake);
     snake->speed = SNAKE_SPEED_START;
     return snake;
 }

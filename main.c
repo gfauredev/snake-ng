@@ -19,6 +19,37 @@ static SDL_Renderer* renderer = NULL; // Le moteur de rendu, configuré
 snake_t*             snake;           // Le serpent du jeu
 
 /**
+ * @brief Affiche le message de bienvenue pendant delay_ms milisecondes
+ * @param delay_ms Durée en milisecondes d’affichage du message, avant début jeu
+ */
+void welcome_message(uint16_t delay_ms)
+{
+    SDL_Log("Bienvenue sur le jeu Snake New Generation !");
+    SDL_Log("Affichage : Mangez un maximum de fruits!"); // Debug msg
+    SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderScale(renderer, 4.0f, 4.0f); // Texte quadruple
+    SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / 4 / 2,
+                        "Mangez un maximum de fruits!");
+    SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Texte normal
+    SDL_RenderPresent(renderer); // Affiche les modifications effectuées
+    SDL_Delay(delay_ms);         // Attend que l’utilisateur ait vu
+}
+
+/**
+ * @brief Déssine (prépare à l’affichage) une partie (tête ou corps) du serpent
+ * @param part La partie du serpent à afficher
+ */
+void draw_snake_part(snake_part_t* part)
+{
+    SDL_FRect rect;                     // Définit le rectangle d’une "case"
+    rect.w = rect.h = PIXEL_PER_SQUARE; // Taille de la case
+    rect.x          = part->x * PIXEL_PER_SQUARE; // Position horizontale
+    rect.y          = part->y * PIXEL_PER_SQUARE; // Position verticale
+    SDL_Log("Déssin : Partie du serpent en (%f, %f)", rect.x, rect.y);
+    SDL_RenderFillRect(renderer, &rect); // Prépare la case au rendu
+}
+
+/**
  * @brief Fonction lancée une fois au tout début du programme, pour initialiser
  * @param appstate État de l’application, spécifique à SDL3
  * @param argc Nombre de paramètres passés en ligne de commande
@@ -43,22 +74,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    // Initialisations d’objets du jeu
-    snake = init_snake(); // Le serpent
-    // Message de bienvenue fenêtre et terminal, couleur définie à blanc
-    SDL_Log("Bienvenue sur le jeu Snake New Generation !");
-    SDL_Log("Affichage : Mangez un maximum de fruits !");
-    SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
-    SDL_SetRenderScale(renderer, 4.0f, 4.0f); // Quadruple texte
-    SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / 4 / 2,
-                        "Mangez un maximum de fruits!");
-    SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
-    SDL_Log("");                              // Saute une ligne
-    SDL_RenderPresent(renderer); // Affiche les modifications effectuées
-    SDL_Delay(2500); // Attend quelques secondes que l’utilisateur ait vu
-
-    // Si nous sommes arrivés jusque là, continuer normalement
-    return SDL_APP_CONTINUE;
+    snake = init_snake();    // Initialise le serpent du jeu
+    welcome_message(2500);   // Message de bienvenue
+    SDL_Log("");             // Saute une ligne dans la console
+    return SDL_APP_CONTINUE; // Nous sommes arrivés ici: continuer normalement
 }
 
 /**
@@ -85,31 +104,18 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
  */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    // Définit la couleur noire, en remplit la feneêtre, puis passe au blanc
+    // Définit la couleur noire, en remplit la fenêtre, puis passe au blanc
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer); // RenderDrawColor sur toute la fenêtre
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
-    // Déssine la tête du serpent, positionnée au bon endroit
-    SDL_FRect rect; // Définit le rectangle d’une "case"
-    rect.w = rect.h = PIXEL_PER_SQUARE;
-    rect.x          = snake->head->x; // Positionne la tête horizontalement
-    rect.y          = snake->head->y; // Positionne la tête verticalement
-    SDL_Log("Affichage : Tête (%f, %f)", rect.x, rect.y);
-    SDL_RenderFillRect(renderer, &rect); // Affiche
-    // Déssine le corps du serpent
+    // Déssine le serpent
+    draw_snake_part(snake->head); // Tête
     for (uint16_t i = 0; i < snake->lenght; i++)
-    {
-        SDL_FRect rect; // Shadow le rectangle d’une "case"
-        rect.w = rect.h = PIXEL_PER_SQUARE;
-        rect.x = snake->body[i].x; // Positionne le corps horizontalement
-        rect.y = snake->body[i].y; // Positionne le corps verticalement
-        SDL_Log("Affichage : Corps (%f, %f)", rect.x, rect.y);
-        SDL_RenderFillRect(renderer, &rect); // Affiche
-    }
+        draw_snake_part(snake->body); // Partie du corps
 
-    SDL_Log("");                 // Saute une ligne
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
+    SDL_Log("");                 // Saute une ligne
     return SDL_APP_CONTINUE;     // Continue l’exécution normalement
 }
 

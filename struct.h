@@ -30,11 +30,13 @@ typedef struct snake_part_s
  */
 typedef struct snake_s
 {
-    snake_part_t* head;             /* < Tête du serpent */
-    snake_part_t* body;             /* < Corp du serpent (un pointeur de `snake_part_t` ), c'est un tableau de longueur `lenght` */
-    uint16_t      lenght;           /* < Longueur du corp du serpent (sans la tête `head`) et donc longueur du tableau `snake_body` */
-    uint16_t      lenght_body_tab;  /* < Longueur max du tableau body */
-    uint16_t      speed;            /* < vitesse du serpent */
+    snake_part_t* head; /* < Tête du serpent */
+    snake_part_t* body; /* < Corp du serpent (un pointeur de `snake_part_t` ),
+                           c'est un tableau de longueur `lenght` */
+    uint16_t length; /* < Longueur du corp du serpent (sans la tête `head`) et
+                        donc longueur du tableau `snake_body` */
+    uint16_t length_body_tab; /* < Longueur max du tableau body */
+    uint16_t speed;           /* < vitesse du serpent */
 
 } snake_t;
 

@@ -33,7 +33,7 @@ void init_snake_body(snake_t* snake);
 
 /**
  * @private
- * @brief Permet de resize le tableau du corp du serpent
+ * @brief Aggrandis le tableau contenant le corps du serpent
  * @param[out] snake pointeur de la structure du serpent
  */
 void resize_snake_body(snake_t* snake);

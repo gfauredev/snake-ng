@@ -25,7 +25,7 @@ snake_t*             snake;           // Le serpent du jeu
 void welcome_message(uint16_t delay_ms)
 {
     SDL_Log("Bienvenue sur le jeu Snake New Generation !");
-    SDL_Log("Affichage : Mangez un maximum de fruits!"); // Debug msg
+    SDL_Log("Affichage : Mangez un maximum de fruits!\n"); // Debug msg
     SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(renderer, 4.0f, 4.0f); // Texte quadruple
     SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / 4 / 2,
@@ -36,16 +36,35 @@ void welcome_message(uint16_t delay_ms)
 }
 
 /**
+ * @brief Initialise le serpent en affichant des messages debug dans la console
+ * @param[out] Le serpent initialisé (variable globale)
+ */
+void log_init_snake()
+{
+    SDL_Log("Initialisation du serpent");
+    snake = init_snake(); // Initialise le serpent du jeu
+    SDL_Log("\tLongueur: %d", snake->length);
+    SDL_Log("\tVitesse: %d", snake->speed);
+    SDL_Log("\tTête (%u, %u) [%d, %d]", snake->head->x, snake->head->y,
+            snake->head->vect.x, snake->head->vect.y);
+    for (uint16_t i = 0; i < snake->length; i++)
+        SDL_Log("\tPartie corps %d (%u, %u) [%d, %d]", i, snake->body[i].x,
+                snake->body[i].y, snake->body[i].vect.x, snake->body[i].vect.y);
+}
+
+/**
  * @brief Déssine (prépare à l’affichage) une partie (tête ou corps) du serpent
  * @param part La partie du serpent à afficher
  */
 void draw_snake_part(snake_part_t* part)
 {
-    SDL_FRect rect;                     // Définit le rectangle d’une "case"
-    rect.w = rect.h = PIXEL_PER_SQUARE; // Taille de la case
-    rect.x          = part->x * PIXEL_PER_SQUARE; // Position horizontale
-    rect.y          = part->y * PIXEL_PER_SQUARE; // Position verticale
-    SDL_Log("Déssin : Partie du serpent en (%f, %f)", rect.x, rect.y);
+    SDL_Log("\tDéssin : Case (%u, %u) [%d, %d]", part->x, part->y, part->vect.x,
+            part->vect.y);
+    SDL_FRect rect; // Définit le rectangle d’une "case"
+    rect.w = rect.h = (float)PIXEL_PER_SQUARE;           // Taille de la case
+    rect.x          = (float)part->x * PIXEL_PER_SQUARE; // Position horizontale
+    rect.y          = (float)part->y * PIXEL_PER_SQUARE; // Position verticale
+    SDL_Log("\t\tAffichage : Case (%f, %f)", rect.x, rect.y);
     SDL_RenderFillRect(renderer, &rect); // Prépare la case au rendu
 }
 
@@ -74,8 +93,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    snake = init_snake();    // Initialise le serpent du jeu
     welcome_message(2500);   // Message de bienvenue
+    log_init_snake();        // Initialise le serpent (avec debug msgs)
     SDL_Log("");             // Saute une ligne dans la console
     return SDL_APP_CONTINUE; // Nous sommes arrivés ici: continuer normalement
 }
@@ -104,18 +123,23 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
  */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    // Définit la couleur noire, en remplit la fenêtre, puis passe au blanc
+    // Définit la couleur noire et en remplit la fenêtre
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer); // RenderDrawColor sur toute la fenêtre
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-
     // Déssine le serpent
+    SDL_Log("Déssin : Tête du serpent");
+    SDL_SetRenderDrawColor(renderer, 127, 63, 255, SDL_ALPHA_OPAQUE);
     draw_snake_part(snake->head); // Tête
-    for (uint16_t i = 0; i < snake->lenght; i++)
-        draw_snake_part(snake->body); // Partie du corps
+    for (uint16_t i = 0; i < snake->length; i++)
+    {
+        SDL_Log("Déssin : Corps du serpent, partie %d", i);
+        SDL_SetRenderDrawColor(renderer, 63, 127, 63, SDL_ALPHA_OPAQUE);
+        draw_snake_part(&snake->body[i]); // Partie du corps
+    }
 
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     SDL_Log("");                 // Saute une ligne
+    SDL_Delay(1000);             // DEBUG delay entre chaque frame pour voir
     return SDL_APP_CONTINUE;     // Continue l’exécution normalement
 }
 

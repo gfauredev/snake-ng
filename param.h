@@ -19,8 +19,8 @@
 #define BODY_RESIZE 2
 
 // Vitesse
-#define SNAKE_SPEED_START 5
-#define DELAY_MS 500
+#define SNAKE_SPEED_START 1
+#define DELAY_MS 250
 
 // Carte
 #define MAP_WIDTH 100

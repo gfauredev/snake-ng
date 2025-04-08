@@ -129,7 +129,7 @@ void draw_map_frame()
                 rect.w = rect.h = (float)PIXEL_PER_SQUARE; // Taille d’une case
                 rect.x = (float)x * PIXEL_PER_SQUARE; // Position horizontale
                 rect.y = (float)y * PIXEL_PER_SQUARE; // Position verticale
-                SDL_Log("\tAffichage : Bordure (%f, %f)", rect.x, rect.y);
+                // SDL_Log("\tAffichage : Bordure (%f, %f)", rect.x, rect.y);
                 SDL_RenderFillRect(renderer, &rect); // Prépare rendu case
             }
         }
@@ -188,16 +188,20 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             switch (event->key.key)
             {
                 case SDLK_LEFT:
-                    turn_snake(snake, LEFT);
+                    if (snake->head->vect.x != 1)
+                        turn_snake(snake, LEFT);
                     break;
                 case SDLK_DOWN:
-                    turn_snake(snake, DOWN);
+                    if (snake->head->vect.y != -1)
+                        turn_snake(snake, DOWN);
                     break;
                 case SDLK_UP:
-                    turn_snake(snake, UP);
+                    if (snake->head->vect.y != 1)
+                        turn_snake(snake, UP);
                     break;
                 case SDLK_RIGHT:
-                    turn_snake(snake, RIGHT);
+                    if (snake->head->vect.x != -1)
+                        turn_snake(snake, RIGHT);
                     break;
             }
     }

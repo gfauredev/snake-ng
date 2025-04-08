@@ -47,6 +47,7 @@ void accelerate(snake_t* snake, int16_t accel)
 void eat(snake_t* snake, fruit_t* fruit)
 {
     fruit->effect(snake);
+    free(fruit); // Libère l’espace mémoire
 }
 
 void move_snake(snake_t* snake)

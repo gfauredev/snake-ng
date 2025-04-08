@@ -1,4 +1,5 @@
 #include <SDL3/SDL_log.h>
+#include <stdlib.h>
 
 #include "param.h"
 #include "snake.h"
@@ -44,10 +45,13 @@ void accelerate(snake_t* snake, int16_t accel)
     snake->speed = accel;
 }
 
-void eat(snake_t* snake, fruit_t* fruit)
+void eat_if_possible(snake_t* snake, fruit_t** fruit)
 {
-    fruit->effect(snake);
-    free(fruit); // Libère l’espace mémoire
+    if (snake->head->x != (*fruit)->x || snake->head->y != (*fruit)->y)
+        return; // Le serpent n’est pas sur le fruit
+    (*fruit)->effect(snake);
+    free(*fruit); // Libère l’espace mémoire
+    *fruit = NULL;
 }
 
 void move_snake(snake_t* snake)
@@ -77,12 +81,12 @@ bool check_death(const snake_t* snake)
     SDL_Log("\tTête: (%d, %d)", snake->head->x, snake->head->y);
 
     // Vérifie pour map
-    if ((snake->head->x == MAP_WIDTH - 1) || (snake->head->x == 0))
+    if ((snake->head->x == MAP_WIDTH) || (snake->head->x == 0))
     {
         SDL_Log("Mort : Serpent sorti de la carte verticalement");
         return true; // X
     }
-    if ((snake->head->y == MAP_HEIGHT - 1) || (snake->head->y == 0))
+    if ((snake->head->y == MAP_HEIGHT) || (snake->head->y == 0))
     {
         SDL_Log("Mort : Serpent sorti de la carte horizontalement");
         return true; // Y

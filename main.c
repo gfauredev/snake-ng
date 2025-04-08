@@ -1,6 +1,4 @@
 #define SDL_MAIN_USE_CALLBACKS 1
-#define WINDOW_WIDTH MAP_WIDTH* PIXEL_PER_SQUARE
-#define WINDOW_HEIGHT MAP_HEIGHT* PIXEL_PER_SQUARE
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
@@ -12,6 +10,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "fruit.h"
 #include "param.h"
 #include "snake.h"
 #include "struct.h"
@@ -19,6 +18,7 @@
 static SDL_Window*   window   = NULL; // La fenêtre
 static SDL_Renderer* renderer = NULL; // Le moteur de rendu, configuré
 snake_t*             snake;           // Le serpent du jeu
+fruit_t*             fruit = NULL;    // Fruit
 
 /**
  * @brief Affiche le message de bienvenue pendant delay_ms milisecondes
@@ -99,15 +99,15 @@ void draw_snake_part(snake_part_t* part)
 void draw_snake()
 {
     SDL_Log("Déssin : Tête du serpent"); // Debug msg
-    SDL_Color c = HEAD_C;
+    SDL_Color c = HEAD_C;                // Définit la couleur de la tête
     SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     draw_snake_part(snake->head); // Tête
+    c = BODY_C;                   // Définit la couleur du corps
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     for (uint16_t i = 0; i < snake->length; i++)
     {
         SDL_Log("Déssin : Corps du serpent, partie %d", i); // Debug msg
-        SDL_Color c = BODY_C;
-        SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
-        draw_snake_part(&snake->body[i]); // Partie du corps
+        draw_snake_part(&snake->body[i]);                   // Partie du corps
     }
 }
 
@@ -117,10 +117,10 @@ void draw_snake()
 void draw_map_frame()
 {
     SDL_Log("Déssin : Bordure"); // Debug msg
-    for (uint16_t x = 0; x < MAP_WIDTH; x++)
-        for (uint16_t y = 0; y < MAP_HEIGHT; y++)
+    for (uint16_t x = 0; x <= MAP_WIDTH; x++)
+        for (uint16_t y = 0; y <= MAP_HEIGHT; y++)
         {
-            if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1)
+            if (x == 0 || x == MAP_WIDTH || y == 0 || y == MAP_HEIGHT)
             {
                 SDL_Color c = BORDER_C;
                 SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b,
@@ -133,6 +133,23 @@ void draw_map_frame()
                 SDL_RenderFillRect(renderer, &rect); // Prépare rendu case
             }
         }
+}
+
+/**
+ * @brief Déssine (prépare à l’affichage) un fruit
+ * @param part Le fruit à afficher
+ */
+void draw_fruit(fruit_t* fruit)
+{
+    SDL_Log("\tDéssin : fruit (%u, %u)", fruit->x, fruit->y);
+    SDL_FRect rect; // Définit le rectangle d’une "case"
+    rect.w = rect.h = (float)PIXEL_PER_SQUARE;   // Taille de la case
+    rect.x = (float)fruit->x * PIXEL_PER_SQUARE; // Position horizontale
+    rect.y = (float)fruit->y * PIXEL_PER_SQUARE; // Position verticale
+    SDL_Log("\t\tAffichage : fruit (%f, %f)", rect.x, rect.y);
+    SDL_SetRenderDrawColor(renderer, fruit->color.r, fruit->color.g,
+                           fruit->color.b, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(renderer, &rect); // Prépare la case au rendu
 }
 
 /**
@@ -165,7 +182,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     log_init_snake();           // Initialise le serpent (avec debug msgs)
     draw_snake();               // Déssine le serpent entier
     SDL_Log("");                // Saute une ligne dans la console
-    welcome_message(2500, 4.0); // Message de bienvenue
+    welcome_message(2500, 3.0); // Message de bienvenue
     return SDL_APP_CONTINUE; // Nous sommes arrivés ici: continuer normalement
 }
 
@@ -221,16 +238,27 @@ SDL_AppResult SDL_AppIterate(void* appstate)
             SDL_GetTicks() / 1000);
     SDL_Color c = BACKGROUND_C;
     SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);   // RenderDrawColor (noir) sur toute la fenêtre
-    draw_map_frame();            // Affiche la bordure du jeu
+    SDL_RenderClear(renderer); // RenderDrawColor (noir) sur toute la fenêtre
+    draw_map_frame();          // Affiche la bordure du jeu
+    if (!fruit)                // S’il n’y a pas de fruit…
+        fruit = spawn_fruit(); // en fais apparaître un
+    else
+    {
+        draw_fruit(fruit); // Affiche le fruit s’il existe
+        eat_if_possible(snake, &fruit);
+    }
     move_snake(snake);           // Calcule position du serpent avec vecteurs
     if (check_death(snake))      // Vérifie si le serpent est mort…
         return SDL_APP_SUCCESS;  // et termine le jeu
     draw_snake();                // Déssine le serpent entier
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     SDL_Log("");                 // Saute une ligne
-    SDL_Delay(DELAY_MS - snake->speed * 50); // DEBUG delay entre frames
-    return SDL_APP_CONTINUE;                 // Continue l’exécution normalement
+    if (DELAY_MS - snake->speed * SPEED_EFFECT_FACTOR -
+            snake->length * SPEED_LENGTH_FACTOR >
+        0)
+        SDL_Delay(DELAY_MS - snake->speed * SPEED_EFFECT_FACTOR -
+                  snake->length * SPEED_LENGTH_FACTOR);
+    return SDL_APP_CONTINUE; // Continue l’exécution normalement
 }
 
 /**

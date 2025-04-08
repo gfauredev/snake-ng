@@ -3,9 +3,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdlib.h>
 
-#include "param.h"
 #include "struct.h"
 
 /**
@@ -43,7 +41,7 @@ void resize_snake_body(snake_t* snake);
  * @param[out] snake Le serpent
  * @param[in] fruit Le fruit mangé
  */
-void eat(snake_t* snake, fruit_t* fruit);
+void eat_if_possible(snake_t* snake, fruit_t** fruit);
 
 /**
  * @brief Poursuit le déplacement engagé du serpent, à exécuter à chaque tour

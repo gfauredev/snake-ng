@@ -42,6 +42,15 @@ typedef struct snake_s
 } snake_t;
 
 /**
+ * @brief Effet et couleur du fruit
+ */
+typedef struct
+{
+    void (*effect)(snake_t* snake);
+    SDL_Color color;
+} effect_t;
+
+/**
  * @brief Structure fruit
  */
 typedef struct fruit_s
@@ -51,4 +60,5 @@ typedef struct fruit_s
     uint32_t  y; //< Position verticale
     void (*effect)(snake_t* snake);
 } fruit_t;
+
 #endif

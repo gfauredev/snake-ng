@@ -8,7 +8,7 @@ set(MAIN snake)
 # Use Clang, set C standard, create main executable
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall") # All the warnings and errors
-add_executable(${MAIN} main.c snake.c)
+add_executable(${MAIN} main.c snake.c fruit.c)
 set_target_properties(${MAIN} PROPERTIES C_STANDARD 23)
 
 # Find and link libraries

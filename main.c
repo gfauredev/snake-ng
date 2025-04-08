@@ -108,6 +108,29 @@ void draw_snake()
 }
 
 /**
+ * @brief Déssine la bordure autour de la zone de jeu
+ */
+void draw_map_frame()
+{
+    SDL_Log("Déssin : Bordure"); // Debug msg
+    for (uint16_t x = 0; x < MAP_WIDTH; x++)
+        for (uint16_t y = 0; y < MAP_HEIGHT; y++)
+        {
+            if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1)
+            {
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255,
+                                       SDL_ALPHA_OPAQUE);
+                SDL_FRect rect; // Définit le rectangle d’une "case"
+                rect.w = rect.h = (float)PIXEL_PER_SQUARE; // Taille de la case
+                rect.x = (float)x * PIXEL_PER_SQUARE; // Position horizontale
+                rect.y = (float)y * PIXEL_PER_SQUARE; // Position verticale
+                SDL_Log("\tAffichage : Bordure (%f, %f)", rect.x, rect.y);
+                SDL_RenderFillRect(renderer, &rect); // Prépare la case au rendu
+            }
+        }
+}
+
+/**
  * @brief Fonction lancée une fois au tout début du programme, pour initialiser
  * @param appstate État de l’application, spécifique à SDL3
  * @param argc Nombre de paramètres passés en ligne de commande
@@ -189,6 +212,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
             SDL_GetTicks() / 1000);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);   // RenderDrawColor (noir) sur toute la fenêtre
+    draw_map_frame();            // Affiche la bordure du jeu
     move_snake(snake);           // Calcule position du serpent avec vecteurs
     if (check_death(snake))      // Vérifie si le serpent est mort…
         return SDL_APP_SUCCESS;  // et termine le jeu

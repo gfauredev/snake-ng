@@ -76,12 +76,12 @@ bool check_death(const snake_t* snake)
     SDL_Log("\tTête: (%d, %d)", snake->head->x, snake->head->y);
 
     // Vérifie pour map
-    if ((snake->head->x == MAP_WIDTH) || (snake->head->x == 0))
+    if ((snake->head->x == MAP_WIDTH - 1) || (snake->head->x == 0))
     {
         SDL_Log("Mort : Serpent sorti de la carte verticalement");
         return true; // X
     }
-    if ((snake->head->y == MAP_HEIGHT) || (snake->head->y == 0))
+    if ((snake->head->y == MAP_HEIGHT - 1) || (snake->head->y == 0))
     {
         SDL_Log("Mort : Serpent sorti de la carte horizontalement");
         return true; // Y

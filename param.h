@@ -3,10 +3,10 @@
 
 // serpent parametre
 // Mouvement
-#define UP {0, -1}
-#define DOWN {0, 1}
-#define LEFT {-1, 0}
-#define RIGHT {1, 0}
+#define UP (vect_t){0, -1}
+#define DOWN (vect_t){0, 1}
+#define LEFT (vect_t){-1, 0}
+#define RIGHT (vect_t){1, 0}
 
 // Tête
 #define SNAKE_START_X 50

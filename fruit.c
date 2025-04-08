@@ -1,5 +1,4 @@
-// fruit.c
-
+// Gestion des fruits
 #include <SDL3/SDL_log.h>
 #include <stdlib.h>
 

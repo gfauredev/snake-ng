@@ -30,14 +30,14 @@ Projet tutoré de développement en C à Polytech Tours.
 
 ### Organisation
 
-| Fichier   | Contenu                   |
-| --------- | ------------------------- |
-| `main.c`  | Lancement et arrêt du jeu |
-| `param.h` | Paramètres globaux        |
-| `snake.c` | Structure du Snake        |
-| `fruit.c` | Fruits                    |
-
-<!-- | `state.c` | États du jeu              | -->
+| Fichier                 | Contenu                                              |
+| ----------------------- | ---------------------------------------------------- |
+| `main.c`                | Initialisation, boucle principale, fin et nettoyages |
+| `param.h`               | Paramètres globaux (macros)                          |
+| `state.h`               | Structure contenant l’état global du jeu             |
+| `render.c` + `render.h` | Affichage des éléments et déroulement du jeu         |
+| `snake.c` + `snake.h`   | Déplacements, évolution et gestion du serpent        |
+| `fruit.c` + `fruit.h`   | Création et gestion des fruits                       |
 
 ### Nommage des symboles
 
@@ -59,14 +59,10 @@ code défini dans le fichier `.clang-format`.
 BasedOnStyle: Microsoft
 IndentWidth: 4
 UseTab: Never
-PointerAlignment: Left
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
-AllowShortFunctionsOnASingleLine: Empty
-AlignAfterOpenBracket: Align
-AlignArrayOfStructures: Right
-BreakBeforeBraces: Allman
 ColumnLimit: 80
+.
+.
+.
 ```
 
 ### Documentation du code

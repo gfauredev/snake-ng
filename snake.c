@@ -10,8 +10,10 @@ void init_snake_head(snake_t* snake)
     head_config.x    = SNAKE_START_X;                   // Position horizontale
     head_config.y    = SNAKE_START_Y;                   // Position verticale
     head_config.vect = (vect_t)SNAKE_START_ORIENTATION; // Vecteur de mouvement
-    snake->head      = malloc(sizeof(snake_part_t));
-    *(snake->head)   = head_config;
+    SDL_Log("\tTête (%u, %u) [%d, %d]", head_config.x, head_config.y,
+            head_config.vect.x, head_config.vect.y);
+    snake->head    = malloc(sizeof(snake_part_t));
+    *(snake->head) = head_config;
 }
 
 void init_snake_body(snake_t* snake)
@@ -26,6 +28,8 @@ void init_snake_body(snake_t* snake)
         body[i].x    = head->x - (i + 1) * (head->vect.x);
         body[i].y    = head->y - (i + 1) * (head->vect.y);
         body[i].vect = head->vect;
+        SDL_Log("\tCorps[%d] (%u, %u) <%d, %d>", i, body[i].x, body[i].y,
+                body[i].vect.x, body[i].vect.y);
     }
 
     snake->length          = START_BODY_SIZE; // Nombre de cases/parties corps
@@ -83,12 +87,12 @@ bool check_death(const snake_t* snake)
     // Vérifie pour map
     if ((snake->head->x == MAP_WIDTH) || (snake->head->x == 0))
     {
-        SDL_Log("Mort : Serpent sorti de la carte verticalement");
+        SDL_Log("Serpent: Mort par sortie verticale");
         return true; // X
     }
     if ((snake->head->y == MAP_HEIGHT) || (snake->head->y == 0))
     {
-        SDL_Log("Mort : Serpent sorti de la carte horizontalement");
+        SDL_Log("Serpent: Mort par sortie horizontale");
         return true; // Y
     }
 
@@ -98,7 +102,7 @@ bool check_death(const snake_t* snake)
         if ((snake->head->y == snake->body[i].y) &&
             (snake->head->x == snake->body[i].x))
         {
-            SDL_Log("Mort : Serpent s’est mangé lui-même");
+            SDL_Log("Serpent: Mort par autophagie");
             SDL_Log("\tCorps[%d]: (%d, %d)", i, snake->body[i].x,
                     snake->body[i].y);
             return true;
@@ -117,10 +121,12 @@ void free_snake_data(snake_t* snake)
 
 snake_t* init_snake()
 {
-    snake_t* snake;
-    snake = malloc(sizeof(snake_t));
+    SDL_Log("Serpent: Initialisation");
+    snake_t* snake = malloc(sizeof(snake_t));
     init_snake_head(snake);
     init_snake_body(snake);
+    SDL_Log("\tLongueur: %d", snake->length);
     snake->speed = SNAKE_SPEED_START;
+    SDL_Log("\tVitesse: %d", snake->speed);
     return snake;
 }

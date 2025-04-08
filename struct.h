@@ -2,6 +2,7 @@
 #ifndef __STRUCT__
 #define __STRUCT__
 
+#include <SDL3/SDL_pixels.h>
 #include <stdint.h>
 
 /**
@@ -45,9 +46,9 @@ typedef struct snake_s
  */
 typedef struct fruit_s
 {
-    uint8_t  color;
-    uint32_t x; //< Position horizontale
-    uint32_t y; //< Position verticale
-    void (*effect)(snake_t *snake);
+    SDL_Color color;
+    uint32_t  x; //< Position horizontale
+    uint32_t  y; //< Position verticale
+    void (*effect)(snake_t* snake);
 } fruit_t;
 #endif

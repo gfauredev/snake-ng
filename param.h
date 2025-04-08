@@ -27,4 +27,12 @@
 #define MAP_HEIGHT 100
 #define PIXEL_PER_SQUARE 10
 
+// Couleurs (_C)
+#define HEAD_C (SDL_Color){63, 255, 63}
+#define BODY_C (SDL_Color){63, 127, 63}
+#define BORDER_C (SDL_Color){255, 255, 255}
+#define FRUIT1_C (SDL_Color){255, 0, 0}
+#define MESSAGE_C (SDL_Color){255, 127, 63}
+#define BACKGROUND_C (SDL_Color){0, 0, 0}
+
 #endif

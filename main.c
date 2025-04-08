@@ -29,7 +29,8 @@ void welcome_message(uint16_t delay_ms, float txt_scale)
 {
     SDL_Log("Affichage : Mangez un maximum de fruits!"); // Debug msg
     SDL_Log("");                                         // Saute une ligne
-    SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
+    SDL_Color c = MESSAGE_C;
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(renderer, txt_scale, txt_scale);
     SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / txt_scale / 3,
                         "Mangez un maximum de fruits!");
@@ -47,7 +48,8 @@ void death_message(uint16_t delay_ms, float txt_scale)
 {
     SDL_Log("Affichage : Snake mort, fin du jeu!"); // Debug msg
     SDL_Log("");                                    // Saute une ligne
-    SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
+    SDL_Color c = MESSAGE_C;
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(renderer, txt_scale, txt_scale);
     SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / txt_scale / 3,
                         "Game Over!");
@@ -97,12 +99,14 @@ void draw_snake_part(snake_part_t* part)
 void draw_snake()
 {
     SDL_Log("Déssin : Tête du serpent"); // Debug msg
-    SDL_SetRenderDrawColor(renderer, 127, 63, 255, SDL_ALPHA_OPAQUE);
+    SDL_Color c = HEAD_C;
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     draw_snake_part(snake->head); // Tête
     for (uint16_t i = 0; i < snake->length; i++)
     {
         SDL_Log("Déssin : Corps du serpent, partie %d", i); // Debug msg
-        SDL_SetRenderDrawColor(renderer, 63, 127, 63, SDL_ALPHA_OPAQUE);
+        SDL_Color c = BODY_C;
+        SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
         draw_snake_part(&snake->body[i]); // Partie du corps
     }
 }
@@ -118,14 +122,15 @@ void draw_map_frame()
         {
             if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1)
             {
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255,
+                SDL_Color c = BORDER_C;
+                SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b,
                                        SDL_ALPHA_OPAQUE);
                 SDL_FRect rect; // Définit le rectangle d’une "case"
-                rect.w = rect.h = (float)PIXEL_PER_SQUARE; // Taille de la case
+                rect.w = rect.h = (float)PIXEL_PER_SQUARE; // Taille d’une case
                 rect.x = (float)x * PIXEL_PER_SQUARE; // Position horizontale
                 rect.y = (float)y * PIXEL_PER_SQUARE; // Position verticale
                 SDL_Log("\tAffichage : Bordure (%f, %f)", rect.x, rect.y);
-                SDL_RenderFillRect(renderer, &rect); // Prépare la case au rendu
+                SDL_RenderFillRect(renderer, &rect); // Prépare rendu case
             }
         }
 }
@@ -210,7 +215,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 {
     SDL_Log("Programme en cours depuis %" SDL_PRIu64 " secondes",
             SDL_GetTicks() / 1000);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_Color c = BACKGROUND_C;
+    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);   // RenderDrawColor (noir) sur toute la fenêtre
     draw_map_frame();            // Affiche la bordure du jeu
     move_snake(snake);           // Calcule position du serpent avec vecteurs

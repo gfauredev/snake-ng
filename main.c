@@ -4,6 +4,7 @@
 #define DELAY_MS 500
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_pixels.h>
@@ -133,8 +134,28 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
  */
 SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 {
-    if (event->type == SDL_EVENT_QUIT)
-        return SDL_APP_SUCCESS; // Quitte l’application car demandé
+    switch (event->type)
+    {
+        case SDL_EVENT_QUIT:
+            return SDL_APP_SUCCESS; // Quitte l’application car demandé
+            break;
+        case SDL_EVENT_KEY_DOWN:
+            switch (event->key.key)
+            {
+                case SDLK_LEFT:
+                    turn_snake(snake, LEFT);
+                    break;
+                case SDLK_DOWN:
+                    turn_snake(snake, DOWN);
+                    break;
+                case SDLK_UP:
+                    turn_snake(snake, UP);
+                    break;
+                case SDLK_RIGHT:
+                    turn_snake(snake, RIGHT);
+                    break;
+            }
+    }
     return SDL_APP_CONTINUE;
 }
 

@@ -47,7 +47,7 @@ SDL_AppResult SDL_AppInit(void** state_ptr, int argc, char* argv[])
     }
     state->snake = init_snake(); // Initialise le serpent (avec messages DEBUG)
     render_snake(state);         // Déssine le serpent entier
-    render_message("Mangez un maximum de fruits!", state->renderer, 3, 2500);
+    render_message("Mangez un maximum de fruits!", state, 3, 1000);
     state->fruit = NULL;     // Initialise le fruit à NULL
     state->pause = 0;        // Ne met pas le jeu en pause
     *state_ptr   = state;    // Passe l’état de l’application
@@ -100,8 +100,7 @@ SDL_AppResult SDL_AppEvent(void* state_ptr, SDL_Event* event)
                     {
                         if (DEBUG >= 1)
                             SDL_Log("Jeu: Jeu en pause");
-                        render_message("Jeu en pause...", state->renderer, 3,
-                                       2500);
+                        render_message("Jeu en pause...", state, 3, 50);
                         state->pause = 1; // Mettre en pause
                     }
                     break;
@@ -169,7 +168,7 @@ void SDL_AppQuit(void* state_ptr, SDL_AppResult result)
 {
     state_t* state = (state_t*)state_ptr; // Récupère l’état global du jeu
     // Message de fin de jeu
-    render_message("Game Over!", state->renderer, 4, 2500);
+    render_message("Game Over!", state, 4, 2000);
 
     // Libère l’espace mémoire stockant le serpent
     free_snake_data(state->snake);

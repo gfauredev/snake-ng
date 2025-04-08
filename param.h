@@ -7,6 +7,8 @@
 #define PIXEL_PER_SQUARE 10
 #define WINDOW_WIDTH (MAP_WIDTH + 1) * PIXEL_PER_SQUARE
 #define WINDOW_HEIGHT (MAP_HEIGHT + 1) * PIXEL_PER_SQUARE
+#define MSG_MARGIN 10
+#define MAX_SCORE (MAP_WIDTH - 1) * (MAP_HEIGHT - 1)
 
 // Mouvement
 #define UP (vect_t){0, -1}

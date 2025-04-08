@@ -4,24 +4,33 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_timer.h>
 
+#include "SDL3/SDL_stdinc.h"
 #include "param.h"
 #include "state.h"
 #include "struct.h"
 
 /* Affiche un message en grand pendant delay_ms milisecondes
  */
-void render_message(char msg[], SDL_Renderer* render, float txt_scale,
+void render_message(char msg[], state_t* state, float txt_scale,
                     uint16_t delay_ms)
 {
     if (DEBUG >= 1)
         SDL_Log("Rendu: Message '%s' pour %dms", msg, delay_ms); // Debug msg
     SDL_Color c = MESSAGE_C;
-    SDL_SetRenderDrawColor(render, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
-    SDL_SetRenderScale(render, txt_scale, txt_scale);
-    SDL_RenderDebugText(render, 10, (float)WINDOW_HEIGHT / txt_scale / 3, msg);
-    SDL_SetRenderScale(render, 1.0f, 1.0f); // Taille normale
-    SDL_RenderPresent(render); // Affiche les modifications effectuées
-    SDL_Delay(delay_ms);       // Attend que l’utilisateur ait vu
+    SDL_SetRenderDrawColor(state->renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderScale(state->renderer, txt_scale, txt_scale);
+    SDL_RenderDebugText(state->renderer, MSG_MARGIN,
+                        (float)WINDOW_HEIGHT / txt_scale / 3, msg);
+    char score[MAX_SCORE]; // Difficile de faire plus
+    SDL_snprintf(score, MAX_SCORE, "Score: %d",
+                 state->snake->length - START_BODY_SIZE);
+    if (state->snake->length > START_BODY_SIZE)
+        SDL_RenderDebugText(state->renderer, MSG_MARGIN,
+                            (float)WINDOW_HEIGHT / txt_scale / 3 + MSG_MARGIN,
+                            score);
+    SDL_SetRenderScale(state->renderer, 1.0f, 1.0f); // Taille normale
+    SDL_RenderPresent(state->renderer); // Affiche les modifications effectuées
+    SDL_Delay(delay_ms);                // Attend que l’utilisateur ait vu
 }
 
 /**
@@ -67,8 +76,7 @@ void render_snake(state_t* state)
     }
 }
 
-/**
- * @brief Déssine la bordure autour de la zone de jeu
+/* Déssine la bordure autour de la zone de jeu
  */
 void render_map_borders(SDL_Renderer* render)
 {
@@ -83,14 +91,13 @@ void render_map_borders(SDL_Renderer* render)
                 render_square(x, y, render);
 }
 
-/**
- * @brief Déssine (prépare à l’affichage) un fruit
- * @param part Le fruit à afficher
+/* Déssine (prépare à l’affichage) un fruit
  */
 void render_fruit(state_t* state)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: fruit (%u, %u)", state->fruit->x, state->fruit->y);
+        SDL_Log("Rendu: Fruit (%u, %u), effet %p", state->fruit->x,
+                state->fruit->y, state->fruit->effect);
     SDL_SetRenderDrawColor(state->renderer, state->fruit->color.r,
                            state->fruit->color.g, state->fruit->color.b,
                            SDL_ALPHA_OPAQUE);

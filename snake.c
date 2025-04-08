@@ -107,7 +107,7 @@ bool check_death(const snake_t* snake)
             (snake->head->x == snake->body[i].x))
         {
             if (DEBUG >= 1)
-                SDL_Log("Serpent: Mort par autophagie, partie %d (%d, %d)", i,
+                SDL_Log("Serpent: Mort par autophagie, corps[%d] (%d, %d)", i,
                         snake->body[i].x, snake->body[i].y);
             return true;
         }

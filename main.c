@@ -19,40 +19,23 @@ static SDL_Window*   window   = NULL; // La fenêtre
 static SDL_Renderer* renderer = NULL; // Le moteur de rendu, configuré
 snake_t*             snake;           // Le serpent du jeu
 fruit_t*             fruit = NULL;    // Fruit
+bool                 pause = false;   // Devons nous mettre le jeu en pause
 
 /**
- * @brief Affiche le message de bienvenue pendant delay_ms milisecondes
+ * @brief Affiche un message en grand pendant delay_ms milisecondes
  * @param delay_ms Durée en milisecondes d’affichage du message, avant début jeu
  * @param txt_scale Multiplicateur de la taille d’affichage
+ * @param msg Le message à afficher
  */
-void welcome_message(uint16_t delay_ms, float txt_scale)
+void message(uint16_t delay_ms, float txt_scale, char msg[])
 {
-    SDL_Log("Affichage : Mangez un maximum de fruits!"); // Debug msg
-    SDL_Log("");                                         // Saute une ligne
+    SDL_Log("Affichage : %s", msg); // Debug msg
+    SDL_Log("");                    // Saute une ligne
     SDL_Color c = MESSAGE_C;
     SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(renderer, txt_scale, txt_scale);
     SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / txt_scale / 3,
-                        "Mangez un maximum de fruits!");
-    SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
-    SDL_RenderPresent(renderer); // Affiche les modifications effectuées
-    SDL_Delay(delay_ms);         // Attend que l’utilisateur ait vu
-}
-
-/**
- * @brief Affiche le message de bienvenue pendant delay_ms milisecondes
- * @param delay_ms Durée en milisecondes d’affichage du message, avant début jeu
- * @param txt_scale Multiplicateur de la taille d’affichage
- */
-void death_message(uint16_t delay_ms, float txt_scale)
-{
-    SDL_Log("Affichage : Snake mort, fin du jeu!"); // Debug msg
-    SDL_Log("");                                    // Saute une ligne
-    SDL_Color c = MESSAGE_C;
-    SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
-    SDL_SetRenderScale(renderer, txt_scale, txt_scale);
-    SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / txt_scale / 3,
-                        "Game Over!");
+                        msg);
     SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     SDL_Delay(delay_ms);         // Attend que l’utilisateur ait vu
@@ -179,10 +162,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    log_init_snake();           // Initialise le serpent (avec debug msgs)
-    draw_snake();               // Déssine le serpent entier
-    SDL_Log("");                // Saute une ligne dans la console
-    welcome_message(2500, 3.0); // Message de bienvenue
+    log_init_snake(); // Initialise le serpent (avec debug msgs)
+    draw_snake();     // Déssine le serpent entier
+    SDL_Log("");      // Saute une ligne dans la console
+    message(2500, 3.0, "Mangez un maximum de fruits!"); // Message de bienvenue
     return SDL_APP_CONTINUE; // Nous sommes arrivés ici: continuer normalement
 }
 
@@ -220,6 +203,13 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
                     if (snake->head->vect.x != -1)
                         turn_snake(snake, RIGHT);
                     break;
+                case SDLK_SPACE:
+                    message(0, 4.0, "Jeu en pause...");
+                    pause = !pause;
+                    break;
+                case SDLK_ESCAPE:
+                    return SDL_APP_SUCCESS; // Quitte l’application car demandé
+                    break;
             }
     }
     return SDL_APP_CONTINUE;
@@ -236,6 +226,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 {
     SDL_Log("Programme en cours depuis %" SDL_PRIu64 " secondes",
             SDL_GetTicks() / 1000);
+    if (pause)
+        return SDL_APP_CONTINUE; // Sortir immédiatement si pause
     SDL_Color c = BACKGROUND_C;
     SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer); // RenderDrawColor (noir) sur toute la fenêtre
@@ -273,6 +265,6 @@ SDL_AppResult SDL_AppIterate(void* appstate)
  */
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
-    death_message(2500, 4.0); // Message de fin de jeu
-    free_snake_data(snake);   // Libère l’espace mémoire stockant le serpent
+    message(2500, 4.0, "Game Over!"); // Message de fin de jeu
+    free_snake_data(snake); // Libère l’espace mémoire stockant le serpent
 }

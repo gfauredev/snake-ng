@@ -37,4 +37,6 @@
 #define MESSAGE_C (SDL_Color){255, 127, 63}
 #define BACKGROUND_C (SDL_Color){0, 0, 0}
 
+// Profondeur des messages de debug, 0 pour désactiver
+#define DEBUG 2
 #endif

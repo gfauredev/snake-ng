@@ -58,11 +58,15 @@ uint8_t effects_proba[] = {70, 20, 10};
  */
 fruit_t* spawn_fruit()
 {
-    SDL_Log("Fruit: Apparition"); // DEBUG
-    fruit_t* new_fruit    = malloc(sizeof(fruit_t));
-    uint8_t  effect_index = 0;
-    uint8_t  proba        = rand_range(0, PROBA_ALL);
-    SDL_Log("\tProba: %d", proba); // DEBUG
+    fruit_t* fruit = malloc(sizeof(fruit_t));
+    fruit->x       = rand_range(1, MAP_WIDTH - 1);
+    fruit->y       = rand_range(1, MAP_HEIGHT - 1);
+    if (DEBUG >= 1)
+        SDL_Log("Fruit: Apparition (%d, %d)", fruit->x, fruit->y); // DEBUG
+    uint8_t effect_index = 0;
+    uint8_t proba        = rand_range(0, PROBA_ALL);
+    if (DEBUG >= 2)
+        SDL_Log("\tRNG: %d", proba); // DEBUG
     while (1)
     {
         if (proba > effects_proba[effect_index])
@@ -73,9 +77,9 @@ fruit_t* spawn_fruit()
         else
             break;
     }
-    new_fruit->x      = rand_range(1, MAP_WIDTH - 1);
-    new_fruit->y      = rand_range(1, MAP_HEIGHT - 1);
-    new_fruit->effect = effects[effect_index].effect;
-    new_fruit->color  = effects[effect_index].color;
-    return new_fruit;
+    if (DEBUG >= 2)
+        SDL_Log("\tEffet: %d", effect_index); // DEBUG
+    fruit->effect = effects[effect_index].effect;
+    fruit->color  = effects[effect_index].color;
+    return fruit;
 }

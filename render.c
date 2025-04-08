@@ -13,7 +13,8 @@
 void render_message(char msg[], SDL_Renderer* render, float txt_scale,
                     uint16_t delay_ms)
 {
-    SDL_Log("Rendu: Message '%s'", msg); // Debug msg
+    if (DEBUG >= 1)
+        SDL_Log("Rendu: Message '%s'", msg); // Debug msg
     SDL_Color c = MESSAGE_C;
     SDL_SetRenderDrawColor(render, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(render, txt_scale, txt_scale);
@@ -32,7 +33,8 @@ void render_message(char msg[], SDL_Renderer* render, float txt_scale,
  */
 void render_square(float x, float y, SDL_Renderer* render)
 {
-    SDL_Log("\t\tRendu: Case (%f, %f)", x, y);
+    if (DEBUG >= 3)
+        SDL_Log("\t\tRendu: Case (%f, %f)", x, y);
     SDL_FRect rect; // Définit le rectangle d’une "case"
     rect.w = rect.h = (float)PIXEL_PER_SQUARE;     // Taille de la case
     rect.x          = (float)x * PIXEL_PER_SQUARE; // Position horizontale
@@ -44,10 +46,11 @@ void render_square(float x, float y, SDL_Renderer* render)
  */
 void render_snake(state_t* state)
 {
-    SDL_Log("Rendu: Serpent\n\tTête (%d, %d)", state->snake->head->x,
-            state->snake->head->y); // DEBUG
-    SDL_Color head_c = HEAD_C;      // Définit la couleur de la tête
-    SDL_Color body_c = BODY_C;      // Définit la couleur du corps
+    if (DEBUG >= 1)
+        SDL_Log("Rendu: Serpent\n\tTête (%d, %d)", state->snake->head->x,
+                state->snake->head->y); // DEBUG
+    SDL_Color head_c = HEAD_C;          // Définit la couleur de la tête
+    SDL_Color body_c = BODY_C;          // Définit la couleur du corps
     SDL_SetRenderDrawColor(state->renderer, head_c.r, head_c.g, head_c.b,
                            SDL_ALPHA_OPAQUE);
     render_square(state->snake->head->x, state->snake->head->y,
@@ -56,7 +59,8 @@ void render_snake(state_t* state)
                            SDL_ALPHA_OPAQUE);
     for (uint16_t i = 0; i < state->snake->length; i++)
     {
-        SDL_Log("\tCorps[%d]", i); // DEBUG
+        if (DEBUG >= 1)
+            SDL_Log("\tCorps[%d]", i); // DEBUG
         render_square(state->snake->body[i].x, state->snake->body[i].y,
                       state->renderer); // Partie du corps
     }
@@ -67,7 +71,8 @@ void render_snake(state_t* state)
  */
 void render_map_borders(SDL_Renderer* render)
 {
-    SDL_Log("Rendu: Bordure zone de jeu"); // Debug msg
+    if (DEBUG >= 1)
+        SDL_Log("Rendu: Bordure zone de jeu"); // Debug msg
     SDL_Color c = BORDER_C;
     SDL_SetRenderDrawColor(render, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     for (uint16_t x = 0; x <= MAP_WIDTH; x++)
@@ -82,7 +87,8 @@ void render_map_borders(SDL_Renderer* render)
  */
 void render_fruit(state_t* state)
 {
-    SDL_Log("Rendu: fruit (%u, %u)", state->fruit->x, state->fruit->y);
+    if (DEBUG >= 1)
+        SDL_Log("Rendu: fruit (%u, %u)", state->fruit->x, state->fruit->y);
     SDL_SetRenderDrawColor(state->renderer, state->fruit->color.r,
                            state->fruit->color.g, state->fruit->color.b,
                            SDL_ALPHA_OPAQUE);

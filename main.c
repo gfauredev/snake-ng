@@ -92,12 +92,14 @@ SDL_AppResult SDL_AppEvent(void* state_ptr, SDL_Event* event)
                 case SDLK_SPACE:
                     if (state->pause)
                     {
-                        SDL_Log("État: Reprise du jeu");
+                        if (DEBUG >= 1)
+                            SDL_Log("État: Reprise du jeu");
                         state->pause = 0; // Reprendre
                     }
                     else
                     {
-                        SDL_Log("État: Jeu en pause");
+                        if (DEBUG >= 1)
+                            SDL_Log("État: Jeu en pause");
                         render_message("Jeu en pause...", state->renderer, 0,
                                        4.0);
                         state->pause = 1; // Mettre en pause
@@ -123,8 +125,9 @@ SDL_AppResult SDL_AppIterate(void* state_ptr)
     state_t* state = (state_t*)state_ptr; // Récupère l’état global du jeu
     if (state->pause)
         return SDL_APP_CONTINUE; // Sortir immédiatement si pause
-    SDL_Log("État: En cours depuis %" SDL_PRIu64 " secondes",
-            SDL_GetTicks() / 1000);
+    if (DEBUG >= 1)
+        SDL_Log("État: En cours depuis %" SDL_PRIu64 " secondes",
+                SDL_GetTicks() / 1000);
     SDL_Color c = BACKGROUND_C;
     SDL_SetRenderDrawColor(state->renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(state->renderer);    // Couleur de fond sur toute la fenêtre
@@ -149,8 +152,9 @@ SDL_AppResult SDL_AppIterate(void* state_ptr)
                   state->snake->length * SPEED_LENGTH_FACTOR
             : 1;
     SDL_Delay(current_delay);
-    SDL_Log("Jeu: Vitesse %d", current_delay); // Vitesse actuelle
-    SDL_Log("");                               // Saute une ligne
+    if (DEBUG >= 1)
+        SDL_Log("Jeu: Vitesse %d", current_delay); // Vitesse actuelle
+    SDL_Log("");                                   // Saute une ligne
     return SDL_APP_CONTINUE; // Continue l’exécution normalement
 }
 

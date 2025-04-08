@@ -1,5 +1,7 @@
-#include "snake.h"
+#include <SDL3/SDL_log.h>
+
 #include "param.h"
+#include "snake.h"
 
 void init_snake_head(snake_t* snake)
 {
@@ -71,18 +73,31 @@ void turn_snake(snake_t* snake, vect_t move)
 
 bool check_death(const snake_t* snake)
 {
+    SDL_Log("\tTête: (%d, %d)", snake->head->x, snake->head->y);
+
     // Vérifie pour map
     if ((snake->head->x == MAP_WIDTH) || (snake->head->x == 0))
+    {
+        SDL_Log("Mort : Serpent sorti de la carte verticalement");
         return true; // X
+    }
     if ((snake->head->y == MAP_HEIGHT) || (snake->head->y == 0))
+    {
+        SDL_Log("Mort : Serpent sorti de la carte horizontalement");
         return true; // Y
+    }
 
     // Vérifie pour corps
-    for (uint16_t i = (snake->length - 1); i >= 0; i--)
+    for (uint16_t i = 0; i < snake->length; i++)
     {
         if ((snake->head->y == snake->body[i].y) &&
             (snake->head->x == snake->body[i].x))
+        {
+            SDL_Log("Mort : Serpent s’est mangé lui-même");
+            SDL_Log("\tCorps[%d]: (%d, %d)", i, snake->body[i].x,
+                    snake->body[i].y);
             return true;
+        }
     }
 
     return false;

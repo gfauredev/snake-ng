@@ -1,7 +1,6 @@
 #define SDL_MAIN_USE_CALLBACKS 1
 #define WINDOW_WIDTH MAP_WIDTH* PIXEL_PER_SQUARE
 #define WINDOW_HEIGHT MAP_HEIGHT* PIXEL_PER_SQUARE
-#define DELAY_MS 500
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
@@ -34,6 +33,24 @@ void welcome_message(uint16_t delay_ms, float txt_scale)
     SDL_SetRenderScale(renderer, txt_scale, txt_scale);
     SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / txt_scale / 3,
                         "Mangez un maximum de fruits!");
+    SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
+    SDL_RenderPresent(renderer); // Affiche les modifications effectuées
+    SDL_Delay(delay_ms);         // Attend que l’utilisateur ait vu
+}
+
+/**
+ * @brief Affiche le message de bienvenue pendant delay_ms milisecondes
+ * @param delay_ms Durée en milisecondes d’affichage du message, avant début jeu
+ * @param txt_scale Multiplicateur de la taille d’affichage
+ */
+void death_message(uint16_t delay_ms, float txt_scale)
+{
+    SDL_Log("Affichage : Snake mort, fin du jeu!"); // Debug msg
+    SDL_Log("");                                    // Saute une ligne
+    SDL_SetRenderDrawColor(renderer, 255, 127, 63, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderScale(renderer, txt_scale, txt_scale);
+    SDL_RenderDebugText(renderer, 10, (float)WINDOW_HEIGHT / txt_scale / 3,
+                        "Game Over!");
     SDL_SetRenderScale(renderer, 1.0f, 1.0f); // Taille normale
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     SDL_Delay(delay_ms);         // Attend que l’utilisateur ait vu
@@ -173,11 +190,13 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);   // RenderDrawColor (noir) sur toute la fenêtre
     move_snake(snake);           // Calcule position du serpent avec vecteurs
+    if (check_death(snake))      // Vérifie si le serpent est mort…
+        return SDL_APP_SUCCESS;  // et termine le jeu
     draw_snake();                // Déssine le serpent entier
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
     SDL_Log("");                 // Saute une ligne
-    SDL_Delay(DELAY_MS);         // DEBUG delay entre chaque frame pour voir
-    return SDL_APP_CONTINUE;     // Continue l’exécution normalement
+    SDL_Delay(DELAY_MS - snake->speed * 50); // DEBUG delay entre frames
+    return SDL_APP_CONTINUE;                 // Continue l’exécution normalement
 }
 
 /**
@@ -188,5 +207,6 @@ SDL_AppResult SDL_AppIterate(void* appstate)
  */
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
-    // free(snake); // Libère l’espace mémoire stockant le serpent
+    death_message(2500, 4.0); // Message de fin de jeu
+    free_snake_data(snake);   // Libère l’espace mémoire stockant le serpent
 }

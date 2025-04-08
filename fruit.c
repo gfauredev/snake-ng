@@ -1,28 +1,48 @@
 // fruit.c
 
-#include "fruit.h"
 #include <stdlib.h>
-#include <time.h>
 
-// Générer un nombre aléatoire dans un intervalle donné
-uint32_t rand_range(uint32_t min, uint32_t max) {
+#include "fruit.h"
+#include "param.h"
+
+/**
+ * @brief Générer un nombre aléatoire dans un intervalle donné
+ * @param min Minimum
+ * @param max Maximum
+ */
+uint32_t rand_range(uint32_t min, uint32_t max)
+{
     return min + rand() % (max - min + 1);
 }
-//
-fruit_t spawn_fruit() {
+
+/**
+ * @brief Fais apparaître un fruit quelque part sur la zone de jeu
+ */
+fruit_t spawn_fruit()
+{
     fruit_t new_fruit;
-    new_fruit.color= RED;
-    new_fruit.x = rand_range(0,MAP_WIDTH);
-    new_fruit.y = rand_range(0,MAP_HEIGHT);
+    new_fruit.color  = FRUIT1_C;
+    new_fruit.x      = rand_range(1, MAP_WIDTH - 1);
+    new_fruit.y      = rand_range(1, MAP_HEIGHT - 1);
     new_fruit.effect = normal_effect;
     return new_fruit;
 }
 
-void normal_effect(snake_t *snake) {
+/**
+ * @brief Effet fruit normal: aggrandis le serpent
+ * @param snake Le serpent à aggrandir
+ */
+void normal_effect(snake_t* snake)
+{
     // Agrandir le serpent
-    snake->lenght += 1;
+    snake->length += 1;
 }
 
-void speed_effect(snake_t *snake) {
+/**
+ * @brief Effet fruit speed: accélère le serpent
+ * @param snake Le serpent à accélérer
+ */
+void speed_effect(snake_t* snake)
+{
     snake->speed += 1;
 }

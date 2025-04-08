@@ -14,7 +14,7 @@ void render_message(char msg[], SDL_Renderer* render, float txt_scale,
                     uint16_t delay_ms)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: Message '%s'", msg); // Debug msg
+        SDL_Log("Rendu: Message '%s' pour %dms", msg, delay_ms); // Debug msg
     SDL_Color c = MESSAGE_C;
     SDL_SetRenderDrawColor(render, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(render, txt_scale, txt_scale);
@@ -47,7 +47,7 @@ void render_square(float x, float y, SDL_Renderer* render)
 void render_snake(state_t* state)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: Serpent\n\tTête (%d, %d)", state->snake->head->x,
+        SDL_Log("Rendu: Serpent, tête (%d, %d)", state->snake->head->x,
                 state->snake->head->y); // DEBUG
     SDL_Color head_c = HEAD_C;          // Définit la couleur de la tête
     SDL_Color body_c = BODY_C;          // Définit la couleur du corps
@@ -60,7 +60,8 @@ void render_snake(state_t* state)
     for (uint16_t i = 0; i < state->snake->length; i++)
     {
         if (DEBUG >= 1)
-            SDL_Log("\tCorps[%d]", i); // DEBUG
+            SDL_Log("\tCorps[%d] (%d, %d)", i, state->snake->body[i].x,
+                    state->snake->body[i].y); // DEBUG
         render_square(state->snake->body[i].x, state->snake->body[i].y,
                       state->renderer); // Partie du corps
     }
@@ -72,7 +73,8 @@ void render_snake(state_t* state)
 void render_map_borders(SDL_Renderer* render)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: Bordure zone de jeu"); // Debug msg
+        SDL_Log("Rendu: Bordure zone de jeu (%d × %d)", MAP_WIDTH,
+                MAP_HEIGHT); // DEBUG
     SDL_Color c = BORDER_C;
     SDL_SetRenderDrawColor(render, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     for (uint16_t x = 0; x <= MAP_WIDTH; x++)

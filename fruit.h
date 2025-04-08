@@ -15,13 +15,13 @@ fruit_t spawn_fruit();
  * @brief L’effet d’un fruit normal (agrandir le serpent)
  * @param snake Le serpent à agrandir
  */
-void normal_effect(snake_t snake);
+void normal_effect(snake_t *snake);
 
 /**
  * @private
  * @brief L’effet d’un fruit accélérant
  * @param snake Le serpent à accélérer
  */
-void speed_effect(snake_t snake);
+void speed_effect(snake_t *snake);
 
 #endif

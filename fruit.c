@@ -1,5 +1,6 @@
 // fruit.c
 
+#include <SDL3/SDL_log.h>
 #include <stdlib.h>
 
 #include "fruit.h"
@@ -51,16 +52,18 @@ effect_t effects[] = {
 
 // Probabilités d’apparition des effets
 #define PROBA_ALL 100
-uint8_t effects_proba[] = {75, 20, 5};
+uint8_t effects_proba[] = {70, 20, 10};
 
 /**
  * @brief Fais apparaître un fruit quelque part sur la zone de jeu
  */
 fruit_t* spawn_fruit()
 {
+    SDL_Log("Fruit: Apparition"); // DEBUG
     fruit_t* new_fruit    = malloc(sizeof(fruit_t));
     uint8_t  effect_index = 0;
     uint8_t  proba        = rand_range(0, PROBA_ALL);
+    SDL_Log("\tProba: %d", proba); // DEBUG
     while (1)
     {
         if (proba > effects_proba[effect_index])

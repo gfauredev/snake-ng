@@ -252,12 +252,16 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         return SDL_APP_SUCCESS;  // et termine le jeu
     draw_snake();                // Déssine le serpent entier
     SDL_RenderPresent(renderer); // Affiche les modifications effectuées
-    SDL_Log("");                 // Saute une ligne
-    if (DELAY_MS - snake->speed * SPEED_EFFECT_FACTOR -
-            snake->length * SPEED_LENGTH_FACTOR >
-        0)
-        SDL_Delay(DELAY_MS - snake->speed * SPEED_EFFECT_FACTOR -
-                  snake->length * SPEED_LENGTH_FACTOR);
+    uint16_t current_delay = DELAY_MS - snake->speed * SPEED_EFFECT_FACTOR -
+                                         snake->length * SPEED_LENGTH_FACTOR >
+                                     0
+                                 ? DELAY_MS -
+                                       snake->speed * SPEED_EFFECT_FACTOR -
+                                       snake->length * SPEED_LENGTH_FACTOR
+                                 : 1;
+    SDL_Delay(current_delay);
+    SDL_Log("Jeu: Vitesse %d", current_delay); // Vitesse actuelle
+    SDL_Log("");                               // Saute une ligne
     return SDL_APP_CONTINUE; // Continue l’exécution normalement
 }
 

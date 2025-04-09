@@ -38,6 +38,7 @@ Projet tutoré de développement en C à Polytech Tours.
 | `render.c` + `render.h` | Affichage des éléments et déroulement du jeu         |
 | `snake.c` + `snake.h`   | Déplacements, évolution et gestion du serpent        |
 | `fruit.c` + `fruit.h`   | Création et gestion des fruits                       |
+| `strings.h`             | Chaînes de caractères du jeu (et debug console)      |
 
 ### Nommage des symboles
 

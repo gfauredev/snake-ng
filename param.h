@@ -7,8 +7,6 @@
 #define PIXEL_PER_SQUARE 25
 #define WINDOW_WIDTH (MAP_WIDTH + 1) * PIXEL_PER_SQUARE
 #define WINDOW_HEIGHT (MAP_HEIGHT + 1) * PIXEL_PER_SQUARE
-#define MSG_MARGIN 10
-#define MAX_SCORE (MAP_WIDTH - 1) * (MAP_HEIGHT - 1)
 
 // Mouvement
 #define UP (vect_t){0, -1}
@@ -30,15 +28,18 @@
 #define SPEED_LENGTH_FACTOR 2
 
 // Couleurs (_C)
+#define BACKGROUND_C (SDL_Color){0, 0, 0}
+#define BORDER_C (SDL_Color){180, 195, 180}
 #define HEAD_C (SDL_Color){63, 255, 63}
 #define BODY_C (SDL_Color){63, 127, 63}
-#define BORDER_C (SDL_Color){255, 255, 255}
 #define FRUIT_NORMAL_C (SDL_Color){255, 0, 0}
 #define FRUIT_SPEED_C (SDL_Color){255, 0, 255}
 #define FRUIT_DOUBLE_C (SDL_Color){255, 255, 0}
 #define MESSAGE_C (SDL_Color){255, 127, 63}
-#define BACKGROUND_C (SDL_Color){0, 0, 0}
 
+// Messages
+#define MSG_MARGIN 10
+#define MAX_SCORE_CHARS sizeof(MSG_MARGIN) + 5
 // Profondeur des messages de debug, 0 pour désactiver
 #define DEBUG 2
 #endif

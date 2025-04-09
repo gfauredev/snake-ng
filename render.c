@@ -2,10 +2,11 @@
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_timer.h>
 
-#include "SDL3/SDL_stdinc.h"
 #include "param.h"
+#include "strings.h"
 #include "struct.h"
 
 /* Affiche un message en grand pendant delay_ms milisecondes
@@ -14,21 +15,21 @@ void render_message(char msg[], state_t* state, float txt_scale,
                     uint16_t delay_ms)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: Message '%s' pour %dms", msg, delay_ms); // Debug msg
+        SDL_Log(RENDER_MSG_MSG, msg, delay_ms); // Debug msg
     SDL_Color c = MESSAGE_C;
     SDL_SetRenderDrawColor(state->renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
     SDL_SetRenderScale(state->renderer, txt_scale, txt_scale);
     SDL_RenderDebugText(state->renderer, MSG_MARGIN,
                         (float)WINDOW_HEIGHT / txt_scale / 3, msg);
-    char score[MAX_SCORE]; // Difficile de faire plus
-    SDL_snprintf(score, MAX_SCORE, "Score: %d",
+    char score[MAX_SCORE_CHARS];
+    SDL_snprintf(score, MAX_SCORE_CHARS, SCORE_MSG,
                  state->snake->length - START_BODY_SIZE);
     if (state->snake->length > START_BODY_SIZE)
         SDL_RenderDebugText(state->renderer, MSG_MARGIN,
                             (float)WINDOW_HEIGHT / txt_scale / 3 + MSG_MARGIN,
                             score);
-    SDL_SetRenderScale(state->renderer, 1.0f, 1.0f); // Taille normale
-    SDL_RenderPresent(state->renderer); // Affiche les modifications effectuées
+    SDL_SetRenderScale(state->renderer, 1.0f, 1.0f); // Normal
+    SDL_RenderPresent(state->renderer); // Affiche les modifications
     SDL_Delay(delay_ms);                // Attend que l’utilisateur ait vu
 }
 
@@ -42,7 +43,7 @@ void render_message(char msg[], state_t* state, float txt_scale,
 void render_square(float x, float y, SDL_Renderer* render)
 {
     if (DEBUG >= 3)
-        SDL_Log("\t\tRendu: Case (%f, %f)", x, y);
+        SDL_Log(RENDER_SQUARE_MSG, x, y);
     SDL_FRect rect; // Définit le rectangle d’une "case"
     rect.w = rect.h = (float)PIXEL_PER_SQUARE;     // Taille de la case
     rect.x          = (float)x * PIXEL_PER_SQUARE; // Position horizontale
@@ -55,7 +56,7 @@ void render_square(float x, float y, SDL_Renderer* render)
 void render_snake(state_t* state)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: Serpent, tête (%d, %d)", state->snake->head->x,
+        SDL_Log(RENDER_SNAKE_MSG, state->snake->head->x,
                 state->snake->head->y); // DEBUG
     SDL_Color head_c = HEAD_C;          // Définit la couleur de la tête
     SDL_Color body_c = BODY_C;          // Définit la couleur du corps
@@ -68,7 +69,7 @@ void render_snake(state_t* state)
     for (uint16_t i = 0; i < state->snake->length; i++)
     {
         if (DEBUG >= 1)
-            SDL_Log("\tCorps[%d] (%d, %d)", i, state->snake->body[i].x,
+            SDL_Log(RENDER_SNAKE_BODY_MSG, i, state->snake->body[i].x,
                     state->snake->body[i].y); // DEBUG
         render_square(state->snake->body[i].x, state->snake->body[i].y,
                       state->renderer); // Partie du corps
@@ -80,7 +81,7 @@ void render_snake(state_t* state)
 void render_map_borders(SDL_Renderer* render)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: Bordure zone de jeu (%d × %d)", MAP_WIDTH,
+        SDL_Log(RENDER_BORDERS_MSG, MAP_WIDTH,
                 MAP_HEIGHT); // DEBUG
     SDL_Color c = BORDER_C;
     SDL_SetRenderDrawColor(render, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
@@ -95,8 +96,8 @@ void render_map_borders(SDL_Renderer* render)
 void render_fruit(state_t* state)
 {
     if (DEBUG >= 1)
-        SDL_Log("Rendu: Fruit (%u, %u), effet %p", state->fruit->x,
-                state->fruit->y, state->fruit->effect);
+        SDL_Log(RENDER_FRUIT_MSG, state->fruit->x, state->fruit->y,
+                state->fruit->effect);
     SDL_SetRenderDrawColor(state->renderer, state->fruit->color.r,
                            state->fruit->color.g, state->fruit->color.b,
                            SDL_ALPHA_OPAQUE);

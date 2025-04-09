@@ -13,7 +13,6 @@
 #include "param.h"
 #include "render.h"
 #include "snake.h"
-#include "state.h"
 #include "struct.h"
 
 /**

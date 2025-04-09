@@ -34,7 +34,7 @@ Projet tutoré de développement en C à Polytech Tours.
 | ----------------------- | ---------------------------------------------------- |
 | `main.c`                | Initialisation, boucle principale, fin et nettoyages |
 | `param.h`               | Paramètres globaux (macros)                          |
-| `state.h`               | Structure contenant l’état global du jeu             |
+| `struct.h`              | Structures communes à de nombreux éléments du jeu    |
 | `render.c` + `render.h` | Affichage des éléments et déroulement du jeu         |
 | `snake.c` + `snake.h`   | Déplacements, évolution et gestion du serpent        |
 | `fruit.c` + `fruit.h`   | Création et gestion des fruits                       |

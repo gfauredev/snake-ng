@@ -2,7 +2,7 @@
 #ifndef __RENDER__
 #define __RENDER__
 
-#include "state.h"
+#include "struct.h"
 
 /**
  * @brief Affiche msg pendant delay_ms milisecondes

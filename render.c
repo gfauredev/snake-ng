@@ -6,7 +6,6 @@
 
 #include "SDL3/SDL_stdinc.h"
 #include "param.h"
-#include "state.h"
 #include "struct.h"
 
 /* Affiche un message en grand pendant delay_ms milisecondes

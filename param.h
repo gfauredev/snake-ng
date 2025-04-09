@@ -2,9 +2,9 @@
 #define __PARAM__
 
 // Carte
-#define MAP_WIDTH 80
-#define MAP_HEIGHT 80
-#define PIXEL_PER_SQUARE 10
+#define MAP_WIDTH 40
+#define MAP_HEIGHT 40
+#define PIXEL_PER_SQUARE 25
 #define WINDOW_WIDTH (MAP_WIDTH + 1) * PIXEL_PER_SQUARE
 #define WINDOW_HEIGHT (MAP_HEIGHT + 1) * PIXEL_PER_SQUARE
 #define MSG_MARGIN 10

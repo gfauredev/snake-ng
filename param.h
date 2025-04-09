@@ -38,8 +38,9 @@
 #define MESSAGE_C (SDL_Color){255, 127, 63}
 
 // Messages
-#define MSG_MARGIN 10
+#define MSG_MARGIN 20
+#define MSG_SCALE 3.5
 #define MAX_SCORE_CHARS sizeof(MSG_MARGIN) + 5
-// Profondeur des messages de debug, 0 pour désactiver
-#define DEBUG 2
+// Profondeur des messages de debug, 0 pour désactiver (sauf erreurs fatales)
+#define DEBUG 1
 #endif

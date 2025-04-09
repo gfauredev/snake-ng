@@ -68,7 +68,7 @@ void render_snake(state_t* state)
                            SDL_ALPHA_OPAQUE);
     for (uint16_t i = 0; i < state->snake->length; i++)
     {
-        if (DEBUG >= 1)
+        if (DEBUG >= 2)
             SDL_Log(RENDER_SNAKE_BODY_MSG, i, state->snake->body[i].x,
                     state->snake->body[i].y); // DEBUG
         render_square(state->snake->body[i].x, state->snake->body[i].y,

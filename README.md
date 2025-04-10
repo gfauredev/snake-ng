@@ -4,6 +4,20 @@ lang: fr
 
 # Projet Snake New Generation
 
+<!--toc:start-->
+
+- [Projet Snake New Generation](#projet-snake-new-generation)
+  - [Outils](#outils)
+    - [Bibliothèques](#bibliothèques)
+  - [Conventions de code](#conventions-de-code)
+    - [Organisation](#organisation)
+    - [Nommage des symboles](#nommage-des-symboles)
+    - [Formatage du code (sauts de ligne, indentation…)](#formatage-du-code-sauts-de-ligne-indentation)
+    - [Documentation du code](#documentation-du-code)
+    - [Autre](#autre)
+
+<!--toc:end-->
+
 Jeu type Snake en C avec la bibliothèque SDL3.
 
 Projet tutoré de développement en C à Polytech Tours.

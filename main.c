@@ -162,13 +162,14 @@ SDL_AppResult SDL_AppIterate(void* state_ptr)
 /**
  * @brief S’exécute une fois à la toute fin du programme, nettoyage
  * @param state L’état du programme SDL3
+ * @param result L’état de sortie de programme (erreur ou normal)
  */
 void SDL_AppQuit(void* state_ptr, SDL_AppResult result)
 {
     state_t* state = (state_t*)state_ptr; // Récupère l’état global du jeu
-    // Message de fin de jeu
-    render_message(END_MSG, state, MSG_SCALE, 2000);
-
+    // Message de fin de jeu pendant 2s si arrêt normal
+    if (result == SDL_APP_SUCCESS)
+        render_message(END_MSG, state, MSG_SCALE, 2000);
     // Libère l’espace mémoire stockant le serpent
     free_snake_data(state->snake);
     // Libère l’espace mémoire stockant le fruit

@@ -38,7 +38,7 @@ Projet tutoré de développement en C à Polytech Tours.
 | `render.c` + `render.h` | Affichage des éléments et déroulement du jeu         |
 | `snake.c` + `snake.h`   | Déplacements, évolution et gestion du serpent        |
 | `fruit.c` + `fruit.h`   | Création et gestion des fruits                       |
-| `strings.h`             | Chaînes de caractères du jeu (et debug console)      |
+| `strings.h`             | Chaînes de caractères du jeu                         |
 
 ### Nommage des symboles
 
@@ -68,15 +68,16 @@ ColumnLimit: 80
 
 ### Documentation du code
 
-Documentation de toutes les fonctions en anglais, suivant la syntaxe
-[Doxygen](https://www.doxygen.nl/manual), comportant au moins les mentions
-`@brief` et `@param`.
+Documentation de toutes les fonctions en français, suivant la syntaxe
+[Doxygen](https://www.doxygen.nl/manual), comportant au moins la mention
+`@brief`, ainsi que `@param` si la fonction prend un ou plusieurs paramètres, et
+`@return` si son type de retour n’est pas `void`.
 
 ```c
 /**
- * @brief Do nothing but being an example function.
- * @param arg1 An example argument
- * @param arg2 A second example argument
+ * @brief Ne fais rien, mis à part être un fonction d’exemple
+ * @param arg1 Le premier argument
+ * @param arg2 Le second argument
  */
 void my_func(uint32_t arg1, uint16_t arg2);
 ```

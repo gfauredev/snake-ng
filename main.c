@@ -162,8 +162,6 @@ SDL_AppResult SDL_AppIterate(void* state_ptr)
 /**
  * @brief S’exécute une fois à la toute fin du programme, nettoyage
  * @param state L’état du programme SDL3
- * @retval SDL_APP_SUCCESS Stopper normalement l’exécution du programme
- * @retval SDL_APP_FAILURE Stopper le programme, une erreur est survenue
  */
 void SDL_AppQuit(void* state_ptr, SDL_AppResult result)
 {
